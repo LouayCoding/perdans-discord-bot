@@ -18,3 +18,5 @@ fs.readdirSync('./handlers').forEach((handler) => {
 
 bot.login(process.env.TOKEN);
 
+
+
