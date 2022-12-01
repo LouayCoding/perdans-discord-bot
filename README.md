@@ -4,7 +4,7 @@
 My first open source Discord bot, the Discord bot comes with all sorts of features such as; **music**, **moderation**, **fun**, **tickets** and much more and this only free to use for your own project.
 
 
-## Features
+## Features 💡
 
 - Moderation
 - Music
@@ -14,7 +14,7 @@ My first open source Discord bot, the Discord bot comes with all sorts of featur
 - And much more!
 
 
-## FAQ
+## FAQ ❓
 
 #### When will the discord bot be ready?
 
