@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
 	name: 'tekst',
@@ -28,7 +28,32 @@ module.exports = {
 		},
 	],
 	run: async (client, interaction) => {
-		let naam = interaction.options.get('type');
-		interaction.reply({ content: 'Pong!', fetchReply: true })
+        let option = interaction.options.get('type').value;
+
+        console.log(option)
+
+        if(option === 'verify'){
+
+            const embed = new EmbedBuilder()
+            .setColor('#FFFFFF')
+            .setDescription('Klik op de knop om jezelf te verifiëren en toegang te krijgen tot alle kanalen. Door jezelf te verifiëren ga je automatisch akkoord met onze server voorwaarden.')
+
+            const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('verifieren')
+					.setLabel('Verifiëren')
+					.setStyle(ButtonStyle.Success),
+                    new ButtonBuilder()
+					.setCustomId('waarom')
+					.setLabel('Waarom?')
+					.setStyle(ButtonStyle.Secondary),
+			);
+
+            interaction.reply({ embeds: [embed], components: [row]})
+        }
+
+        
+
 	}
 };
