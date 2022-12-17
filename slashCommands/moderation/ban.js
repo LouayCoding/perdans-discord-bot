@@ -1,7 +1,7 @@
 const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
-	name: 'tekst',
+	name: 'ban',
 	description: "Set simple verification for this server.",
 	type: ApplicationCommandType.ChatInput,
 	default_member_permissions: '',

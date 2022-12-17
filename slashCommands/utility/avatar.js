@@ -1,44 +1,59 @@
-const { ApplicationCommandType, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { ApplicationCommandType, EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
-	name: 'avatar',
-	description: "Display user's avatar",
-	type: ApplicationCommandType.ChatInput,
-	cooldown: 3000,
+    name: 'avatar',
+    description: "Display user's avatar",
+    type: ApplicationCommandType.ChatInput,
+    cooldown: 3000,
     options: [
         {
-            name: 'user',
-            description: 'The avatar of the user you want to display.',
-            type: ApplicationCommandOptionType.User
-        }
+            name: 'get',
+            description: 'Gets a users avatar',
+            type: ApplicationCommandOptionType.Subcommand,
+            options: [
+                {
+                    name: 'user',
+                    description: 'User to fetch the avatar from',
+                    type: ApplicationCommandOptionType.User
+                }
+            ]
+        },
+        {
+            name: 'guild',
+            description: 'Gets a users guild avatar, if they have one',
+            type: ApplicationCommandOptionType.Subcommand,
+            options: [
+                {
+                    name: 'user',
+                    description: 'User to fetch the avatar from',
+                    type: ApplicationCommandOptionType.User
+                }
+            ]
+        },
     ],
-	run: async (client, interaction) => {
+    run: async (client, interaction) => {
+        const command = interaction.options.getSubcommand();
         const user = interaction.options.get('user')?.user || interaction.user;
+        let avatar;
+        
+        if(command === 'guild'){
+          let fetchMember = await interaction.guild.members.fetch(user.id);
+          let guildAvatar = fetchMember.avatarURL({ size:408});
+
+          if(guildAvatar) avatar = guildAvatar;
+          else return client.embed.errorEmbed(interaction, `${fetchMember.user.tag} does not have a server avatar.`)
+        }
+
+        if(command === 'get'){
+            avatar = user.displayAvatarURL({ size: 4096 });
+        }
+        
 
         const embed = new EmbedBuilder()
-        .setTitle(`${user.tag}'s avatar`)
-        .setImage(user.displayAvatarURL({ size: 4096 }))
-        .setColor('Fuchsia')
-        .setTimestamp();
+            .setAuthor({ name: `${user.tag}` })
+            .setTitle('Avatar')
+            .setImage(user.displayAvatarURL({ size: 4096 }))
 
-        const formats = ['png', 'jpg', 'jpeg', 'gif'];
-        const components = [];
-        formats.forEach(format => {
-            let imageOptions = { extension: format, forceStatic: format == 'gif' ? false : true };
-
-            if (user.avatar == null && format !== 'png') return; 
-            if (!user.avatar.startsWith('a_') && format === 'gif') return;
-            components.push(
-                new ButtonBuilder()
-                .setLabel(format.toUpperCase())
-                .setStyle('Link')
-                .setURL(user.displayAvatarURL(imageOptions))
-            )
-        })
-
-        const row = new ActionRowBuilder()
-        .addComponents(components);
-
-		return interaction.reply({ embeds: [embed], components: [row] })
-	}
+        return interaction.reply({ embeds: [embed] })
+    }
 };
