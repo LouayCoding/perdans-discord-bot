@@ -1,13 +1,19 @@
 const { EmbedBuilder, Collection, PermissionsBitField } = require('discord.js')
 const ms = require('ms');
+const afk = require('../modules/afk');
 const client = require('..');
 const config = require('../config.json');
+const leveling = require('../modules/leveling');
 
 const prefix = client.prefix;
 const cooldown = new Collection();
 
 client.on('messageCreate', async message => {
 	if(message.author.bot) return;
+
+	leveling(message)
+	afk(message, client);
+
 	if(message.channel.type !== 0) return;
 	if(!message.content.startsWith(prefix)) return; 
 	const args = message.content.slice(prefix.length).trim().split(/ +/g); 

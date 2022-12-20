@@ -11,16 +11,24 @@ const client = new Client({
 	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction]
 });
 
+const Levels = require("discord-xp");
 const fs = require('fs');
 const config = require('./config.json');
-require('dotenv').config() 
+require('dotenv').config()
 
+client.snipe;
+client.errorMessage = (interaction) => interaction.reply({ content: 'Er is een fout opgetreden, neem contact op met een beheerder.'}); 
+client.afk = new Collection();
 client.commands = new Collection()
 client.aliases = new Collection()
 client.slashCommands = new Collection();
 client.buttons = new Collection();
+client.modals = new Collection();
 client.prefix = config.prefix;
-
+client.errorembed = (interaction, text) => {
+	const embed = new EmbedBuilder().setDescription(text).setColor('#ff0000')
+	interaction.reply({ embeds: [embed], ephemeral: true })
+}
 module.exports = client;
 
 
@@ -28,20 +36,7 @@ fs.readdirSync('./handlers').forEach((handler) => {
 	require(`./handlers/${handler}`)(client)
 });
 
-const errorEmbed = (interaction, text) => {
-	const embed = new EmbedBuilder()
-		.setDescription(text)
-		.setColor('#ff0000')
-
-	interaction.reply({ embeds: [embed], ephemeral: true })
-}
-
-client.embed = {
-	errorEmbed
-};
-
+Levels.setURL(process.env.DATABASE_URL);
 client.login(process.env.TOKEN)
-
-
 
 

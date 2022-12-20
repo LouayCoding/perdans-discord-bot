@@ -9,8 +9,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setAuthor({ name: `Membercount` })
             .setDescription(`Er zitten momenteel **${memberCount}** leden in de server.`)
-            .setFooter({ text: 'Perdans' })
-            .setTimestamp()
+            .setColor('Random')
 
         return interaction.reply({ embeds: [embed] })
     }
