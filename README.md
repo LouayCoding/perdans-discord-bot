@@ -53,10 +53,12 @@ Start the server
 To run this project, you will need to add the following environment variables to your .env file
 
 `TOKEN`
-
+`GUILD_ID`
 `CLIENT_ID`
-
-`GUILD`
+`DATABASE_URL`
+`LEVELUP_CHANNEL`
+`LOG_CHANNEL`
+`TICKET_CATEGORY`
 
 
 ## Made in
