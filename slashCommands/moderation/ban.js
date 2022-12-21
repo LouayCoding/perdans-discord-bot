@@ -36,7 +36,7 @@ module.exports = {
         let reden = interaction.options.get('reden')?.value || 'geen reden';
 
         const embed = new EmbedBuilder().setAuthor({ name: `${gebruiker.user.tag} is verbannen!`, iconURL: avatar }).setDescription(`**reden**: ${reden}`).setColor('#ff0000')
-        const embedLog = new EmbedBuilder().setAuthor({ name: `[VERBANNEN] ${gebruiker.user.tag}`, iconURL: avatar }).addFields({ name: 'Gebruiker', value: gebruiker.user.tag, inline: true }, { name: 'Moderator', value: interaction.user.tag, inline: true },{ name: gebruiker.user.id, value: reden, inline: true },).setThumbnail(avatar).setColor('#ff0000').setFooter({ text: `ID: ${gebruiker.user.id}` }).setTimestamp()
+        const embedLog = new EmbedBuilder().setAuthor({ name: `[VERBANNEN] ${gebruiker.user.tag}`, iconURL: avatar }).addFields({ name: 'Gebruiker', value: gebruiker.user.tag, inline: true }, { name: 'Moderator', value: interaction.user.tag, inline: true },{ name: 'Reden', value: reden, inline: true },).setThumbnail(avatar).setColor('#ff0000').setFooter({ text: `ID: ${gebruiker.user.id}` }).setTimestamp()
 
         await interaction.reply({ embeds: [embed] })
         const logChannel = await interaction.guild.channels.fetch(process.env.LOG_CHANNEL);

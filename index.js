@@ -1,4 +1,5 @@
 const { Client, GatewayIntentBits, Partials, Collection, EmbedBuilder } = require('discord.js');
+const mongoose = require('mongoose');
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -17,7 +18,7 @@ const config = require('./config.json');
 require('dotenv').config()
 
 client.snipe;
-client.errorMessage = (interaction) => interaction.reply({ content: 'Er is een fout opgetreden, neem contact op met een beheerder.'}); 
+client.errorMessage = (interaction) => interaction.reply({ content: 'Er is een fout opgetreden, neem contact op met een beheerder.' });
 client.afk = new Collection();
 client.commands = new Collection()
 client.aliases = new Collection()
@@ -35,6 +36,21 @@ module.exports = client;
 fs.readdirSync('./handlers').forEach((handler) => {
 	require(`./handlers/${handler}`)(client)
 });
+
+try {
+	mongoose.connect('mongodb://localhost:27017/test');
+} catch (error) {
+	console.log(error);
+}
+
+const kittySchema = new mongoose.Schema({
+	name: String
+});
+
+const Kitten = mongoose.model('Kitten', kittySchema);
+
+const silence = new Kitten({ name: 'Silence' });
+console.log(silence.name);
 
 Levels.setURL(process.env.DATABASE_URL);
 client.login(process.env.TOKEN)
